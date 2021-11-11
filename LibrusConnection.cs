@@ -58,7 +58,8 @@ namespace HttpClientLibrus
             try
             {
                
-                request = LibrusUtils.GetRequest(url); //spend hour fixing this shit, turns out referer header doesnt chagne anything | EDIT: removed it at core from GetRequest() and everything broke nvm
+                request = LibrusUtils.GetRequest(url); //spend hour fixing this shit, turns out referer header doesnt chagne anything
+                                                       //| EDIT: removed it at core from GetRequest() and everything broke nvm
                                                        //GOOD TO KNOW but im not cleaning up rest of the code oh no | EDIT: I am
                 LibrusUtils.MakePostRequest(ref request, LibrusUtils.GetContent($"action=login&login={username}&pass={password}"));
                 response = await client.SendAsync(request);
