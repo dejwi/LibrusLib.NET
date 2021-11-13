@@ -1,5 +1,5 @@
 # LibrusLib.NET
-Librus library to pull data with HttpClient
+Librus library to pull data with HttpClient<br>
 For now you can only extract school timetable
 ## Ah yes
 My first time using HttpClient /w doing Get/Post requests<br>
