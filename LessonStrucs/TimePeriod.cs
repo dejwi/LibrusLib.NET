@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HttpClientLibrus.LessonStrucs
+namespace LibrusLib.LessonStrucs
 {
     public struct TimePeriod
     {
         public DateTime start, end;
-        public int mark;
+        public int mark { get; set; }
         public TimePeriod(DateTime start, DateTime end, int mark)
         {
             this.start = start;
@@ -19,7 +19,7 @@ namespace HttpClientLibrus.LessonStrucs
 
         public override string ToString()
         {
-            return $"{(mark >= 0 ? "Lekcja " : "Wolna ")} {Math.Abs(mark)} === {start:hh:mm:ss} - {end:hh:mm:ss}";
+            return $"{start:HH:mm} - {end:HH:mm}";
         }
     }
 }

@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HttpClientLibrus.LessonStrucs
+namespace LibrusLib.LessonStrucs
 {
     public struct Lesson
     {
-        public string name { get; }
+        public string name { get; set; }
         public string AdditionalInfo { get; }
         public string Teacher { get; }
         public string Classroom { get; }
@@ -16,7 +16,7 @@ namespace HttpClientLibrus.LessonStrucs
         public DateTime to { get; }
         public bool isReplacement { get; }
         public bool isCancelled { get; }
-        public int lessonNum { get; }
+        public int lessonNum { get; set; }
 
         public Lesson(string name, string additionalInfo, bool isReplacement, bool isCancelled, DateTime from, DateTime to, int lessonNum)
         {

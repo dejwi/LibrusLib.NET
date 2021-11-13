@@ -7,12 +7,13 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HttpClientLibrus
+namespace LibrusLib
 {
     public static class LibrusConnection
     {
-        public static async Task<LibrusData> Connect(string username, string password)
+        public static async Task<LibrusData> Connect(string username, string password, IProgress<int> progress)
         {
+            progress.Report(0);
             var acc = new LibrusData(username, password, new CookieContainer());
             HttpResponseMessage response;
             HttpRequestMessage request;
@@ -30,7 +31,9 @@ namespace HttpClientLibrus
 
                 iframeCode = GetIframeCode(await response.Content.ReadAsStringAsync());
 
+
                 Console.WriteLine("1worked?");
+                progress.Report(15);
             }
             catch (Exception)
             {
@@ -47,6 +50,7 @@ namespace HttpClientLibrus
                 response = await client.SendAsync(request);
                 url = response.RequestMessage.RequestUri.ToString();
                 Console.WriteLine("2worked?");
+                progress.Report(25);
             }
             catch (Exception)
             {
@@ -57,7 +61,7 @@ namespace HttpClientLibrus
             //3
             try
             {
-               
+
                 request = LibrusUtils.GetRequest(url); //spend hour fixing this shit, turns out referer header doesnt chagne anything
                                                        //| EDIT: removed it at core from GetRequest() and everything broke nvm
                                                        //GOOD TO KNOW but im not cleaning up rest of the code oh no | EDIT: I am
@@ -66,12 +70,14 @@ namespace HttpClientLibrus
 
                 //check if server likes us
                 var x = await response.Content.ReadAsStringAsync();
-                if (!x.Contains("ok")){
+                if (!x.Contains("ok"))
+                {
                     Console.WriteLine("3 jebac");
                     return new LibrusData("FAIL", "FAIL", null);
                 }
 
                 Console.WriteLine("3worked?");
+                progress.Report(35);
             }
             catch (Exception)
             {
@@ -87,6 +93,7 @@ namespace HttpClientLibrus
                     url);
                 response = await client.SendAsync(request);
                 Console.WriteLine("4worked?");
+                progress.Report(50);
             }
             catch (Exception)
             {
@@ -95,6 +102,7 @@ namespace HttpClientLibrus
             }
 
             //if worked return
+
             return acc;
         }
 

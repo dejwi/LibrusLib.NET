@@ -1,20 +1,18 @@
 ﻿using FluentDateTime;
 using HtmlAgilityPack;
-using HttpClientLibrus.LessonStrucs;
+using LibrusLib.LessonStrucs;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HttpClientLibrus
+namespace LibrusLib
 {
     public class LibrusPlan
     {
-        public List<TimePeriod> timePeriods;
-        public List<SchoolDay> week;
+        public List<TimePeriod> timePeriods { get; set; }
+        public List<SchoolDay> week { get; set; }
 
         private const string requestUrl = "https://synergia.librus.pl/przegladaj_plan_lekcji";
 
@@ -24,8 +22,9 @@ namespace HttpClientLibrus
             this.week = week;
         }
 
-        public static async Task<LibrusPlan> Retrieve(LibrusData connection, string gWeek = "")
+        public static async Task<LibrusPlan> Retrieve(LibrusData connection, IProgress<int> progress, string gWeek = "")
         {
+            progress.Report(50);
             //2021-08-30_2021-09-05 gWeek example
             string html;
             if (gWeek != "")
@@ -33,7 +32,7 @@ namespace HttpClientLibrus
                     , $"requestkey=0&tydzien={gWeek}&pokaz_zajecia_zsk=on&pokaz_zajecia_ni=on");
             else
                 html = await LibrusUtils.GetReqResponse(requestUrl, connection.cookieSession);
-
+            progress.Report(60);
             var doc = new HtmlDocument();
             doc.LoadHtml(html);
             var document = doc.DocumentNode;
@@ -49,7 +48,7 @@ namespace HttpClientLibrus
 
             DateTime firstDayOfCurrentWeek = gWeek == "" ? DateTime.Now.BeginningOfWeek() : LibrusUtils.ParseGWeek(gWeek).BeginningOfWeek();
 
-
+            progress.Report(70);
             foreach (var item in rows)
             {
                 var hrNode = item.SelectSingleNode("./*[2]");
@@ -103,6 +102,7 @@ namespace HttpClientLibrus
                         timePeriods.Last().mark));
                 }
             }
+            progress.Report(87);
             int r = 0;
             foreach (var d in lessons)
             {
@@ -110,6 +110,7 @@ namespace HttpClientLibrus
                 week.Add(new SchoolDay(d, firstDayOfCurrentWeek.AddDays(r)));
             }
 
+            progress.Report(100);
             //almost all code in this function is coppied sry idk how to reform html data from this site
             return new LibrusPlan(timePeriods, week);
         }

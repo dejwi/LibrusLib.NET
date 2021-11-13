@@ -1,22 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 
-namespace HttpClientLibrus
+namespace LibrusLib
 {
     public static class LibrusUtils
     {
         public static void SetDefHeadersGet(ref HttpRequestMessage http)
         {
-            
+
             http.Headers.Add("Connection", "keep-alive");
             http.Headers.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:93.0) Gecko/20100101 Firefox/93.0");
             http.Headers.Add("Sec-Fetch-Dest", "document");
